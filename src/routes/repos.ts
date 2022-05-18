@@ -29,3 +29,29 @@ repos.get('/', async (_: Request, res: Response) => {
 
   res.json(filteredData);
 });
+
+repos.get('/:repoId', async (_: Request, res: Response) => {
+  res.header('Cache-Control', 'no-store');
+
+  res.status(200);
+  const reposData = await axios.get(URL);
+
+  const filteredUrlData: Repo[] = reposData.data.filter((item: Repo) =>
+    isForkedFalse(item)
+  );
+  const filteredJsonData: Repo[] = jsonData.filter((item) =>
+    isForkedFalse(item)
+  );
+  const filteredData = filteredUrlData.concat(filteredJsonData);
+
+  const selectedRepo = filteredData.find(
+    (repo) => repo.id === Number(_.params.repoId)
+  );
+  if (selectedRepo) {
+    res.json(selectedRepo);
+  } else {
+    res.json({
+      message: 'Repository with selected id does not exist',
+    });
+  }
+});
