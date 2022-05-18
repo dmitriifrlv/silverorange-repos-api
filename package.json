@@ -11,6 +11,7 @@
     "prettier-write": "prettier --write 'src/**/*.{js,ts}'"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "cors": "^2.8.5",
     "debug": "^4.3.3",
     "dotenv-flow": "^3.2.0",
